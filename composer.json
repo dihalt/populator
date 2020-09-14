@@ -1,12 +1,12 @@
 {
-    "name": "greabock/populator",
+    "name": "dihalt/populator",
     "description": "eloquent model populator",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
-            "name": "Greabock",
-            "email": "greabock@gmail.com"
+            "name": "Robin Bobin",
+            "email": "aaaaaa@gmail.com"
         }
     ],
     "require": {
