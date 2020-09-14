@@ -1,6 +1,6 @@
 {
     "name": "dihalt/populator",
-    "description": "eloquent model populator",
+    "description": "Eloquent model populator",
     "type": "library",
     "license": "MIT",
     "authors": [
