@@ -56,7 +56,7 @@ class MorphToManyPopulator extends RelationPopulator
             });
         });
 
-        $model->setRelation(Str::snake($relationName), $relatedCollection);
+        $model->setRelation(Str::camel($relationName), $relatedCollection);
     }
 
 }

@@ -33,7 +33,7 @@ class HasOnePopulator extends RelationPopulator
             $this->uow->persist($relatedModel);
         }
 
-        $model->setRelation(Str::snake($relationName), $relatedModel);
+        $model->setRelation(Str::camel($relationName), $relatedModel);
     }
 
     protected function setRelationField(Model $model, HasOne $relation, Model $related): void

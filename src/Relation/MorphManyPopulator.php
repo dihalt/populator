@@ -42,7 +42,7 @@ class MorphManyPopulator extends RelationPopulator
             $this->uow->persist($related);
         });
 
-        $model->setRelation(Str::snake($relationName), $relatedModels);
+        $model->setRelation(Str::camel($relationName), $relatedModels);
     }
 
     protected function setRelationField(Model $model, MorphMany $relation, Model $related): void

@@ -54,7 +54,7 @@ class HasManyPopulator extends RelationPopulator
             $this->uow->persist($related);
         });
 
-        $model->setRelation(Str::snake($relationName), $relatedModels);
+        $model->setRelation(Str::camel($relationName), $relatedModels);
     }
 
     protected function setRelationField(Model $model, HasMany $relation, Model $related): void
