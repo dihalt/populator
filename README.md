@@ -35,7 +35,7 @@
 ## Установка
 
 ```
-composer require greabock/populator
+composer require dihalt/populator
 ```
 
 ## Использование
