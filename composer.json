@@ -14,8 +14,8 @@
         }
     ],
     "require": {
-        "illuminate/database": "^5.5",
-        "illuminate/support": "^5.5",
+        "illuminate/database": "^6.0",
+        "illuminate/support": "^6.0",
         "ramsey/uuid": "^3.7"
     },
     "minimum-stability": "stable",
