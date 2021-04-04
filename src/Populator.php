@@ -122,9 +122,8 @@ class Populator
         $relations = Arr::except($data, $model->getFillable());
 
         foreach ($relations as $relation => $relationData) {
-            $relation = Str::camel($relation);
 
-            $relation = Str::camel($relation);
+            $relation = static::camel($relation);
 
             if (method_exists($model, $relation) && call_user_func([$model, $relation]) instanceof Relation) {
 
@@ -168,5 +167,14 @@ class Populator
     private function extractRelation(Model $model, string $relationName): Relation
     {
         return call_user_func([$model, $relationName]);
+    }
+
+    /**
+     * @param string|int $str
+     * @return bool|mixed
+     */
+    public static function camel($str)
+    {
+        return Str::startsWith($str, '__') ? '__' . Str::camel($str) : Str::camel($str);
     }
 }
