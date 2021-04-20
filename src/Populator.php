@@ -53,14 +53,38 @@ class Populator
         $this->initRelationPopulators();
     }
 
+    protected function getRelations(Model $model, array $data)
+    {
+        $allFields = Arr::except($data, $model->getFillable());
+
+        $relations = [];
+
+        foreach ($allFields as $relation => $relationData) {
+
+            $relation = static::camel($relation);
+
+            if (method_exists($model, $relation) && call_user_func([$model, $relation]) instanceof Relation) {
+
+                $relations[] = $relation;
+            }
+        }
+        return $relations;
+    }
+
+    protected function clearData(array &$data, array $relations)
+    {
+        array_walk($relations, function ($key) use (&$data) {
+            unset($data[$key]);
+        });
+    }
+
     /**
      * @param mixed|Model|string $model
      * @param array|null $data
-     * @param string $path
+     * @param array $params
      * @return Model|null
-     * @throws Exception
      */
-    public function populate($model, ?array $data): ?Model
+    public function populate($model, ?array $data, array $params = []): ?Model
     {
         assert(is_subclass_of($model, Model::class));
 
@@ -72,7 +96,7 @@ class Populator
             $model = $this->resolve($model, $data);
         }
 
-        $model->fill($data);
+        $this->fill($model, $data);
 
         $this->fillRelations($model, $data);
 
@@ -81,6 +105,23 @@ class Populator
         return $model;
     }
 
+    /**
+     * @param Model $model
+     * @param array $data
+     */
+    protected function fill(Model $model, array $data)
+    {
+        // remove from data relation fields
+        $this->clearData($data, $this->getRelations($model, $data));
+
+        $model->fill($data);
+    }
+
+    /**
+     * @param $model
+     * @param $relationName
+     * @return RelationPopulator
+     */
     public function getRelationPopulator($model, $relationName)
     {
         if (is_string($model)) {
@@ -119,23 +160,8 @@ class Populator
      */
     protected function fillRelations(Model $model, array $data): void
     {
-        $relations = Arr::except($data, $model->getFillable());
-
-        foreach ($relations as $relation => $relationData) {
-
-            $relation = static::camel($relation);
-
-            if (method_exists($model, $relation) && call_user_func([$model, $relation]) instanceof Relation) {
-
-//                if (is_string($relationData) || is_bool($relationData)) {
-//                    dump(get_class($model));
-//                    dump($relation);
-//                    dump($relationData);
-//                    dd();
-//                }
-
-                $this->populateRelation($model, $relation, $relationData);
-            }
+        foreach ($this->getRelations($model, $data) as $relation => $relationData) {
+            $this->populateRelation($model, $relation, $relationData);
         }
     }
 
