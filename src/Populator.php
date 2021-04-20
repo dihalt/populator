@@ -65,7 +65,7 @@ class Populator
 
             if (method_exists($model, $relation) && call_user_func([$model, $relation]) instanceof Relation) {
 
-                $relations[] = $relation;
+                $relations[$relation] = $relationData;
             }
         }
         return $relations;
@@ -73,7 +73,7 @@ class Populator
 
     protected function clearData(array &$data, array $relations)
     {
-        array_walk($relations, function ($key) use (&$data) {
+        array_walk($relations, function ($value, $key) use (&$data) {
             unset($data[$key]);
         });
     }
